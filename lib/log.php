@@ -1,5 +1,9 @@
 <?php
 require_once 'apps/eslog/vendor/autoload.php';
+use Liuggio\StatsdClient\StatsdClient,
+    Liuggio\StatsdClient\Factory\StatsdDataFactory,
+    Liuggio\StatsdClient\Sender\SocketSender,
+    Liuggio\StatsdClient\Service\StatsdService;
 
 class OC_esLog {
 
@@ -13,7 +17,7 @@ class OC_esLog {
 	// or 'File write' and determines what value to send to statsd
 	public static function sendToStatsd($path,$action){
 		// Create the udp socket to send the data to statsd
-		$sender = new SocketSender('localhost', 8126, 'udp');
+		$sender = new SocketSender('localhost', 8125, 'udp');
 
 		// Create the client which sends to data to statsd using the sender
 		$client  = new StatsdClient($sender);
@@ -24,6 +28,7 @@ class OC_esLog {
 		if ($action == "File read"){
 			$service->increment('read');
 		} elseif ($action == "File write"){
+			throw new \Exception("\$action = $action");
 			$service->increment('write');
 		}
 

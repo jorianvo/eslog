@@ -1,0 +1,5 @@
+{
+    "require": {
+        "liuggio/statsd-php-client": "~1.0"
+    }
+}

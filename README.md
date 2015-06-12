@@ -17,21 +17,15 @@ Then we need ``composer`` so we can use/install **statsd-php-client**. I opted f
     $ curl -sS https://getcomposer.org/installer | php
     $ sudo mv composer.phar /usr/local/bin/composer
 
-Now we can clone the **statsd-php-client** repo and install it:
-
-    $ cd ~
-    $ git clone git://github.com/liuggio/statsd-php-client.git
-    $ cd statsd-php-client
-    $ composer install
-
-Once installed, clone this repo in the apps directory of ownCloud (i.e. ``/var/www/owncloud/apps`` for a default ownCloud installation):
+Once installed, clone this repo in the apps directory of ownCloud (i.e. ``/var/www/owncloud/apps`` for a default ownCloud installation) and use composer to install **statsd-php-client**:
 
     $ cd /var/www/owncloud/apps
     $ git clone https://github.com/jorianvo/eslog
+    $ composer install
 
 Place the vendor directory in the **statsd-php-client** in the cloned repo:
 
-    $ sudo cp -r ~/statsd-php-client/vendor/ /var/www/owncloud/apps/eslog
+    $ sudo cp -r ~/statsd-php-client/vendor/ /var/www/owncloud/apps/eslog/
 
 Now this app should be ready to go!
 

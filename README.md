@@ -1,38 +1,16 @@
 esLog
 =====
 
-Send ownCloud users activities to an Elasticsearch server for remote logging.
-The idea of this app is based on SuperLog wrote by Bastien Ho
-(https://github.com/EELV-fr/Owncloud-Superlog)
+This is my fork of the esLog ownCloud app. This fork should send ownCloud users activity to Graphite using liuggio/statsd-php-client. 
 
-The captured events are:
-- User login
-- User logout
-- User creation
-- User deletion
-- Password change
-- Group creation
-- Group deletion
-- User added/removed to/from a group
+From now the hooks set are:
 - Read file
 - Write file
-- Delete file
-- Copy/rename file
-- Share file
-- Enable/disablle 3rd party apps
 
 #
-# Changelog
+# Installation instructions
 #
-
-v1.0
-* First version released
-
-#
-# Installation
-#
-This app requires the Elasticsearch PHP API.
-See: http://www.elasticsearch.org/guide/en/elasticsearch/client/php-api/current/
+This app requires the liuggio/statsd-php-client.
 
 Once installed, place the vendor in the root path of the app (ie: apps/eslog/vendor)
 

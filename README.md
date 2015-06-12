@@ -8,7 +8,7 @@ From now the hooks set are:
 - Write file
 
 ## Installation instructions (Linux)
-This app requires the [statsd-php-client](https://github.com/liuggio/statsd-php-client). Before we can install it we need to get some dependencies. The first dependency is ``git`` so we can clone the **statsd-php-client** repo:
+This app requires the [statsd-php-client](https://github.com/liuggio/statsd-php-client). Before we can install it we need to get some dependencies. The first dependency is ``git`` so we can clone this repo:
 
     $ sudo apt-get install git
 
@@ -23,11 +23,7 @@ Once installed, clone this repo in the apps directory of ownCloud (i.e. ``/var/w
     $ git clone https://github.com/jorianvo/eslog
     $ composer install
 
-Place the vendor directory in the **statsd-php-client** in the cloned repo:
-
-    $ sudo cp -r ~/statsd-php-client/vendor/ /var/www/owncloud/apps/eslog/
-
-Now this app should be ready to go!
+The last step is to enable the app in ownCloud.
 
 ### ownCloud
 

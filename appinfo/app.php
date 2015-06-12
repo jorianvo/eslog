@@ -21,8 +21,9 @@ OCP\App::registerPersonal('eslog', 'settings');
 
 /* HOOKS */
 // For now we are only interested in reads and writes
+// Format is OC_HOOK::connect(OC class, Hook, local class, local class method);
 OC_HOOK::connect('OC_Filesystem', 'read', 'OC_esLog_Hooks', 'read');
-OC_HOOK::connect('OC_Filesystem', 'write', 'OC_esLog_Hooks', 'write');
+OC_HOOK::connect('OC_Filesystem', 'post_write', 'OC_esLog_Hooks', 'write');
 
 // Cleanning settings
 \OCP\BackgroundJob::addRegularTask('OC_Eslog', 'clean');

@@ -1,7 +1,7 @@
 esLog
 =====
 
-This is my fork of the esLog ownCloud app. This fork should send ownCloud users activity to Graphite using https://github.com/liuggio/statsd-php-client. 
+This is my fork of the esLog ownCloud app. This fork should send ownCloud users activity to Graphite using [statsd-php-client](https://github.com/liuggio/statsd-php-client). 
 
 From now the hooks set are:
 - Read file
@@ -10,7 +10,7 @@ From now the hooks set are:
 #
 # Installation instructions
 #
-This app requires the https://github.com/liuggio/statsd-php-client.
+This app requires the [statsd-php-client](https://github.com/liuggio/statsd-php-client).
 
 Once installed, place the vendor in the root path of the app (ie: apps/eslog/vendor)
 

@@ -15,6 +15,7 @@ This app requires the [statsd-php-client](https://github.com/liuggio/statsd-php-
 
 Then we need ``composer`` so we can use/install **statsd-php-client**. I opted for a global installation, but this is not necessary (just take at look at the installation [instructions](https://getcomposer.org/doc/00-intro.md) from composer):
 
+	$ cd ~
     $ curl -sS https://getcomposer.org/installer | php
     $ sudo mv composer.phar /usr/local/bin/composer
 

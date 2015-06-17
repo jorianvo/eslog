@@ -36,6 +36,14 @@ class OC_esLog {
       $ip = "none";
     }
 
+    // Ip can be invalid or a local address, if so set country to unknown
+    // Otherwise we can go ahead and resolv country
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+      $country = "unknown";
+    }
+
+    // As filtering the private range works only for ipv4 we can still get no
+    // location from the db so check the country once MongoRegex
     $country = self::IpToCountry($ip);
 
     //throw new \Exception("country of origin = $country");
@@ -52,13 +60,30 @@ class OC_esLog {
   }
 
   // This function will return the corresponding country given a city
-  public static function IpToCountry($ip) {
+  private static function IpToCountry($ip) {
     $reader = new Reader('/usr/local/share/GeoIP/GeoLite2-Country.mmdb');
 
     // Get the record of the corrsponding ip
     $record = $reader->country($ip);
 
-    // Return ip
-    return $record->country->name;
+    // Get country name
+    $country = $record->country->name;
+
+    // The country can still be unknown e.g. if the $ip is a link local ipv6
+    // address, so if the $country ends with 'is not in the database.' than
+    // return country as unknown
+    if (self::endsWith($country,"is not in the database.")) {
+      return "unknown";
+    } else {
+      return $country;
+    }
+  }
+
+  // This function will check if $haystack ends with $needle, if so it will return true, else false
+  // substr compares $haystack from offset -strlen($needle) (thus from the end of the string)
+  // up to the end of $haystack
+  // Originally found at http://theoryapp.com/string-startswith-and-endswith-in-php/
+  private static function endsWith($haystack, $needle) {
+    return substr_compare($haystack, $needle, -strlen($needle)) === 0;
   }
 }

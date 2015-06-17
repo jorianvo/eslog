@@ -4,6 +4,7 @@ use Liuggio\StatsdClient\StatsdClient,
     Liuggio\StatsdClient\Factory\StatsdDataFactory,
     Liuggio\StatsdClient\Sender\SocketSender,
     Liuggio\StatsdClient\Service\StatsdService;
+use GeoIp2\Database\Reader;
 
 class OC_esLog {
 
@@ -15,7 +16,7 @@ class OC_esLog {
 	// The path is the path of the file that is read or written
 	// currently this is not used. The action is either 'File read'
 	// or 'File write' and determines what value to send to statsd
-	public static function sendToStatsd($path,$action){
+	public static function sendToStatsd($path,$action){    
 		// Create the udp socket to send the data to statsd
 		$sender = new SocketSender('localhost', 8125, 'udp');
 
@@ -24,15 +25,40 @@ class OC_esLog {
 		$factory = new StatsdDataFactory('\Liuggio\StatsdClient\Entity\StatsdData');
 		$service = new StatsdService($client, $factory);
 
+    // Get ip and city of origin
+    //if(isset($_SERVER["REMOTE_ADDR"])) {
+    //     $ip = $_SERVER["REMOTE_ADDR"];
+    //}
+
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+      $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+      $ip = "none";
+    }
+
+    $country = self::IpToCountry($ip);
+
+    //throw new \Exception("country of origin = $country");
+
 		// Check if file is read or written
 		if ($action == "File read"){
 			$service->increment('read');
 		} elseif ($action == "File write"){
-			throw new \Exception("\$action = $action");
-			$service->increment('write');
+      $service->increment("files.writes.".$country);
 		}
 
 		// Send the data over the socket to statsd
 		$service->flush();
 	}
+
+  // This function will return the corresponding country given a city
+  public static function IpToCountry($ip) {
+    $reader = new Reader('/usr/local/share/GeoIP/GeoLite2-Country.mmdb');
+
+    // Get the record of the corrsponding ip
+    $record = $reader->country($ip);
+
+    // Return ip
+    return $record->country->name;
+  }
 }

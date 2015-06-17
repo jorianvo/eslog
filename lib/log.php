@@ -43,7 +43,7 @@ class OC_esLog {
     }
 
     // As filtering the private range works only for ipv4 we can still get no
-    // location from the db so check the country once MongoRegex
+    // location from the db, this case is handled by the IpToCountry method
     $country = self::IpToCountry($ip);
 
     //throw new \Exception("country of origin = $country");

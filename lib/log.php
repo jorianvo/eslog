@@ -64,20 +64,15 @@ class OC_esLog {
     $reader = new Reader('/usr/local/share/GeoIP/GeoLite2-Country.mmdb');
 
     // Get the record of the corrsponding ip
-    $record = $reader->country($ip);
-
-    // Get country name
-    $country = $record->country->name;
-
     // The country can still be unknown e.g. if the $ip is a link local ipv6
-    // address, so if the $country ends with 'is not in the database.' than
-    // return country as unknown
-    if (self::endsWith($country,"is not in the database.")) {
-      return "unknown";
-    } else {
-      return $country;
+    // address, so if the $record throws a 'GeoIp2\Exception\AddressNotFoundException'
+    // Set the country to Unknown.
+    try {
+        $record = $reader->country($ip);
+        $country = $record->country->name;
+    } catch (GeoIp2\Exception\AddressNotFoundException $e) {
+        $country = "Unknown";
     }
-  }
 
   // This function will check if $haystack ends with $needle, if so it will return true, else false
   // substr compares $haystack from offset -strlen($needle) (thus from the end of the string)
@@ -85,5 +80,6 @@ class OC_esLog {
   // Originally found at http://theoryapp.com/string-startswith-and-endswith-in-php/
   private static function endsWith($haystack, $needle) {
     return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+    return $country;
   }
 }

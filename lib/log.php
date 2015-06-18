@@ -74,12 +74,6 @@ class OC_esLog {
         $country = "Unknown";
     }
 
-  // This function will check if $haystack ends with $needle, if so it will return true, else false
-  // substr compares $haystack from offset -strlen($needle) (thus from the end of the string)
-  // up to the end of $haystack
-  // Originally found at http://theoryapp.com/string-startswith-and-endswith-in-php/
-  private static function endsWith($haystack, $needle) {
-    return substr_compare($haystack, $needle, -strlen($needle)) === 0;
     return $country;
   }
 }

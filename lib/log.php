@@ -39,12 +39,12 @@ class OC_esLog {
     // Ip can be invalid or a local address, if so set country to unknown
     // Otherwise we can go ahead and resolv country
     if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
-      $country = "unknown";
+      $country = "Unknown";
+    } else {
+      // As filtering the private range works only for ipv4 we can still get no
+      // location from the db, this case is handled by the IpToCountry method
+      $country = self::IpToCountry($ip);
     }
-
-    // As filtering the private range works only for ipv4 we can still get no
-    // location from the db, this case is handled by the IpToCountry method
-    $country = self::IpToCountry($ip);
 
     //throw new \Exception("country of origin = $country");
 

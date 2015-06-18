@@ -30,6 +30,8 @@ class OC_esLog {
     //     $ip = $_SERVER["REMOTE_ADDR"];
     //}
 
+    // For testing, a browser plugin can be used to set this
+    // header so the implementation can be tested for multiple countries
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
       $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {

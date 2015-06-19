@@ -26,21 +26,15 @@ Once installed, clone this repo in the apps directory of ownCloud (i.e. ``/var/w
     $ cd /var/www/owncloud/apps/eslog
     $ sudo composer install
 
-The last step is to download the MaxMind free GeoLite2 (country) database, to do so:
+The last step is to download the MaxMind free GeoLite2 databases, we need both since we are interested in both the country and the city of origin. To download the databases:
 
     $ sudo mkdir -p /usr/local/share/GeoIP
     $ cd /usr/local/share/GeoIP
-    $ sudo wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
-    $ sudo gunzip /usr/local/share/GeoIP/GeoLite2-Country.mmdb.gz
+    $ sudo wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-{Country,City}.mmdb.gz
+    $ sudo gunzip /usr/local/share/GeoIP/GeoLite2-{Country,City}.mmdb.gz
 
 The last step is to enable the app in ownCloud.
 
-### ownCloud
+### Tested with:
 
-
-#
-# Tests
-#
-
-Owncloud
-* OC 8
+- ownCloud 8.0.4

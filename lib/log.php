@@ -27,7 +27,9 @@ class OC_esLog {
 
     // Get ip and city of origin
     //if(isset($_SERVER["REMOTE_ADDR"])) {
-    //     $ip = $_SERVER["REMOTE_ADDR"];
+    //  $ip = $_SERVER["REMOTE_ADDR"];
+    //} else {
+    //  $ip = '';
     //}
 
     // For testing, a browser plugin can be used to set this
@@ -35,7 +37,7 @@ class OC_esLog {
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
       $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {
-      $ip = "none";
+      $ip = "";
     }
 
     // Ip can be invalid or a local address, if so set country to unknown

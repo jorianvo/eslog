@@ -12,6 +12,14 @@
     <input type="text" id="eslog_user" name="eslog_user" value="<?php echo $_['eslog_port']; ?>" size="50"/>
     <label for="eslog_user">Port number statsd listen on</label>
   </p>
+
+  <p>
+    <select id="eslog_proto" name="eslog_proto">
+      <option value="udp"<?php if ($_['eslog_proto'] == "udp") { echo " selected"; }?>>udp</option>
+      <option value="tcp"<?php if ($_['eslog_proto'] == "tcp") { echo " selected"; }?>>tcp</option>
+    </select>
+    <label for="eslog_proto">Protocol to use to communicate with statsd</label>
+  </p>
   <p>
     <input type="submit" value="Save"/>
   </p>

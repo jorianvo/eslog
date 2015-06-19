@@ -43,11 +43,11 @@ class OC_esLog {
     // Ip can be invalid or a local address, if so set country to unknown
     // Otherwise we can go ahead and resolv country
     if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
-      $country = "Unknown";
+      $locator = "Unknown";
     } else {
       // As filtering the private range works only for ipv4 we can still get no
       // location from the db, this case is handled by the IpToCountry method
-      $country = self::IpToCountry($ip);
+      $locator = self::IpToLocator($ip);
     }
 
     //throw new \Exception("country of origin = $country");
@@ -56,15 +56,17 @@ class OC_esLog {
     if ($action == "File read"){
       $service->increment('read');
     } elseif ($action == "File write"){
-      $service->increment("files.writes.".$country);
+      $service->increment("files.writes.".$locator);
     }
 
     // Send the data over the socket to statsd
     $service->flush();
   }
 
-  // This function will return the corresponding country given a city
-  private static function IpToCountry($ip) {
+  // This function will return the locator of a given (valid, non-private)
+  // ip address in the form <country>.<city> or just Unknown if the country
+  // cannot be determined
+  private static function IpToLocator($ip) {
     $reader = new Reader('/usr/local/share/GeoIP/GeoLite2-Country.mmdb');
 
     // Get the record of the corrsponding ip
@@ -72,12 +74,35 @@ class OC_esLog {
     // address, so if the $record throws a 'GeoIp2\Exception\AddressNotFoundException'
     // Set the country to Unknown.
     try {
-        $record = $reader->country($ip);
-        $country = $record->country->name;
+      $record = $reader->country($ip);
+      $country = $record->country->name;
+
+      // Country does exists, so now find the city
+      $city = self::IpToCity($ip);
+
+      // Only in this case we can return a country and city
+      return $country.".".$city;
     } catch (GeoIp2\Exception\AddressNotFoundException $e) {
-        $country = "Unknown";
+      // No country found, hence city makes no sense either
+      return $country = "Unknown";
+    }
+  }
+
+  // This function will return the corresponding city given an ip address
+  private static function IpToCity($ip) {
+    $reader = new Reader('/usr/local/share/GeoIP/GeoLite2-City.mmdb');
+
+    // Just to be safe, also catch the 'GeoIp2\Exception\AddressNotFoundException'
+    // if for some reason the city is unknown (we know for sure the country exists)
+    try {
+      $record = $reader->city($ip);
+
+      // Country does exists, so now find the city
+      $city = $record->city->name;
+    } catch (GeoIp2\Exception\AddressNotFoundException $e) {
+      $city = "Unknown";
     }
 
-    return $country;
+    return $city;
   }
 }

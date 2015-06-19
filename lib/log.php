@@ -17,8 +17,13 @@ class OC_esLog {
   // currently this is not used. The action is either 'File read'
   // or 'File write' and determines what value to send to statsd
   public static function sendToStatsd($path,$action){
+    // Get host and port from gui (admin)
+    $host = OC_Appconfig::getValue('eslog', 'eslog_host', '127.0.0.1');
+    $port = OC_Appconfig::getValue('eslog', 'eslog_port', '8125');
+    $proto = OC_Appconfig::getValue('eslog', 'eslog_proto', 'udp');
+
     // Create the udp socket to send the data to statsd
-    $sender = new SocketSender('localhost', 8125, 'udp');
+    $sender = new SocketSender($host, $port, $proto);
 
     // Create the client which sends to data to statsd using the sender
     $client  = new StatsdClient($sender);

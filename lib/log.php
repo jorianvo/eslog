@@ -14,9 +14,11 @@ class OC_esLog {
 
   // This function will gather the stats and send them statsd
   // The path is the path of the file that is read or written
-  // currently this is not used. The action is either 'File read'
-  // or 'File write' and determines what value to send to statsd
-  public static function sendToStatsd($path,$action){
+  // currently this is not used. The action tells us the action
+  // performed e.g. 'Webdav put request' and the prefix is the
+  // statsd prefix we give to the metric in order to easily find
+  // it in graphite
+  public static function sendToStatsd($path,$prefix){
     // Get host and port from gui (admin)
     $host = OC_Appconfig::getValue('eslog', 'eslog_host', '127.0.0.1');
     $port = OC_Appconfig::getValue('eslog', 'eslog_port', '8125');
@@ -58,11 +60,7 @@ class OC_esLog {
     //throw new \Exception("country of origin = $country");
 
     // Check if file is read or written
-    if ($action == "File read"){
-      $service->increment('read');
-    } elseif ($action == "File write"){
-      $service->increment("files.writes.".$locator);
-    }
+    $service->increment($prefix.$locator);
 
     // Send the data over the socket to statsd
     $service->flush();

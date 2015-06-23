@@ -15,12 +15,12 @@ class OC_esLog_Hooks {
 
   // This function is called every time a file is read
   static public function read($path) {
-    OC_esLog::sendToStatsd($path,'File read');
+    OC_esLog::sendToStatsd($path,'browser.reads.');
   }
 
   // This function is called every time a file is written
   static public function write($path) {
-    OC_esLog::sendToStatsd($path,'File write');
+    OC_esLog::sendToStatsd($path,'browser.uploads.');
   }
 
   // This function is called every time a file is written using webdav
@@ -39,7 +39,7 @@ class OC_esLog_Hooks {
     // Get the request method
     if($protocol=='webdav'){
       if ($action=='put') {
-        OC_esLog::sendToStatsd(NULL,'File write');
+        OC_esLog::sendToStatsd(NULL,'webdav.putrequests.');
       }
     }
   }

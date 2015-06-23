@@ -83,6 +83,11 @@ class OC_esLog {
       // Country does exists, so now find the city
       $city = self::IpToCity($ip);
 
+      // City can be empty, we rather return Unknown
+      if ($city == '') {
+        $city = "Unknown";
+      }
+
       // Only in this case we can return a country and city
       return $country.".".$city;
     } catch (GeoIp2\Exception\AddressNotFoundException $e) {
